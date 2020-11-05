@@ -72,7 +72,7 @@ body {
 }
 
 .dot {
-  background: white;
+  background: yellow;
   border: 8px solid black;
   border-radius: 50%;
 }
