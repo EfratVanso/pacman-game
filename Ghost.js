@@ -45,4 +45,4 @@ class Ghost {
 }
 
 export default Ghost;
-}
+

@@ -1,12 +1,14 @@
-import { LEVEL, OBJECT_TYPE } from './setup';
+import { LEVEL, OBJECT_TYPE } from "./setup";
+import { randomMovement } from "./ghostMoves";
 // Classes
-import GameBoard from './GameBoard';
-import Pacman from './Pacman';
+import GameBoard from "./GameBoard";
+import Pacman from "./Pacman";
+import Ghost from "./Ghost";
 
 // Dom Elements
-const gameGrid = document.querySelector('#game');
-const scoreTable = document.querySelector('#score');
-const startButton = document.querySelector('#start-button');
+const gameGrid = document.querySelector("#game");
+const scoreTable = document.querySelector("#score");
+const startButton = document.querySelector("#start-button");
 
 // Game constants
 const POWER_PILL_TIME = 10000; // ms
@@ -20,37 +22,43 @@ let gameWin = false;
 let powerPillActive = false;
 let powerPillTimer = null;
 
-
 // --- GAME CONTROLLER --- //
 function gameOver(pacman, grid) {}
 
 function checkCollision(pacman, ghosts) {}
 
 function gameLoop(pacman, ghosts) {
-    gameBoard.moveCharacter(pacman);
+  // 1. Move Pacman
+  gameBoard.moveCharacter(pacman);
+  // 2. Check Ghost collision on the old positions
+  checkCollision(pacman, ghosts);
+  // 3. Move ghosts
+  ghosts.forEach((ghost) => gameBoard.moveCharacter(ghost));
 }
 
 function startGame() {
-    
-  
-    gameWin = false;
-    powerPillActive = false;
-    score = 0;
-  
-    startButton.classList.add('hide');
-  
-    gameBoard.createGrid(LEVEL);
-  
-    const pacman = new Pacman(2, 287);
-    gameBoard.addObject(287, [OBJECT_TYPE.PACMAN]);
-    document.addEventListener('keydown', (e) =>
-      pacman.handleKeyInput(e, gameBoard.objectExist)
-    );
- 
-    // Game loop
-    timer = setInterval(() => gameLoop(pacman), GLOBAL_SPEED);
+  gameWin = false;
+  powerPillActive = false;
+  score = 0;
+
+  startButton.classList.add("hide");
+
+  gameBoard.createGrid(LEVEL);
+
+  const pacman = new Pacman(2, 287);
+  gameBoard.addObject(287, [OBJECT_TYPE.PACMAN]);
+  document.addEventListener("keydown", (e) =>
+    pacman.handleKeyInput(e, gameBoard.objectExist)
+  );
+  const ghosts = [
+    new Ghost(5, 188, randomMovement, OBJECT_TYPE.BLINKY),
+    new Ghost(4, 209, randomMovement, OBJECT_TYPE.PINKY),
+    new Ghost(3, 230, randomMovement, OBJECT_TYPE.INKY),
+    new Ghost(2, 251, randomMovement, OBJECT_TYPE.CLYDE),
+  ];
+  // Game loop
+  timer = setInterval(() => gameLoop(pacman, ghosts), GLOBAL_SPEED);
 }
 
 // Initialize game
-startButton.addEventListener('click', startGame);
-
+startButton.addEventListener("click", startGame);
