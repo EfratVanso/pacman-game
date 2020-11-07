@@ -641,7 +641,24 @@ var powerPillTimer = null; // --- GAME CONTROLLER --- //
 
 function gameOver(pacman, grid) {}
 
-function checkCollision(pacman, ghosts) {}
+function checkCollision(pacman, ghosts) {
+  var collidedGhost = ghosts.find(function (ghost) {
+    return pacman.pos === ghost.pos;
+  });
+
+  if (collidedGhost) {
+    if (pacman.powerPill) {
+      playAudio(soundGhost);
+      gameBoard.removeObject(collidedGhost.pos, [_setup.OBJECT_TYPE.GHOST, _setup.OBJECT_TYPE.SCARED, collidedGhost.name]);
+      collidedGhost.pos = collidedGhost.startPos;
+      score += 100;
+    } else {
+      gameBoard.removeObject(pacman.pos, [_setup.OBJECT_TYPE.PACMAN]);
+      gameBoard.rotateDiv(pacman.pos, 0);
+      gameOver(pacman, gameGrid);
+    }
+  }
+}
 
 function gameLoop(pacman, ghosts) {
   // 1. Move Pacman
@@ -651,7 +668,9 @@ function gameLoop(pacman, ghosts) {
 
   ghosts.forEach(function (ghost) {
     return gameBoard.moveCharacter(ghost);
-  });
+  }); // 4. Do a new ghost collision check on the new positions
+
+  checkCollision(pacman, ghosts);
 }
 
 function startGame() {
