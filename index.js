@@ -68,6 +68,16 @@ function gameLoop(pacman, ghosts) {
   ghosts.forEach((ghost) => gameBoard.moveCharacter(ghost));
   // 4. Do a new ghost collision check on the new positions
   checkCollision(pacman, ghosts);
+   // 5. Check if Pacman eats a dot
+   if (gameBoard.objectExist(pacman.pos, OBJECT_TYPE.DOT)) {
+    playAudio(soundDot);
+
+    gameBoard.removeObject(pacman.pos, [OBJECT_TYPE.DOT]);
+    // Remove a dot
+    gameBoard.dotCount--;
+    // Add Score
+    score += 10;
+  }
 }
 
 function startGame() {
