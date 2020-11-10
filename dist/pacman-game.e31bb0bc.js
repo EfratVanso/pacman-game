@@ -412,7 +412,6 @@ var GameBoard = /*#__PURE__*/function () {
 
 var _default = GameBoard;
 exports.default = _default;
-s;
 },{"@babel/runtime/helpers/toConsumableArray":"node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","./setup":"setup.js"}],"node_modules/@babel/runtime/helpers/defineProperty.js":[function(require,module,exports) {
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -644,7 +643,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // Dom Elements
 var gameGrid = document.querySelector('#game');
 var scoreTable = document.querySelector('#score');
-var startButton = document.querySelector('#start-button'); // Game constants
+var startButton = document.querySelector('#start-button');
+var pillTime = document.querySelector('#pillTime'); // Game constants
 
 var POWER_PILL_TIME = 10000; // ms
 
@@ -657,7 +657,9 @@ var score = 0;
 var timer = null;
 var gameWin = false;
 var powerPillActive = false;
-var powerPillTimer = null; // --- AUDIO --- //
+var powerPillTimer = null;
+var pillCounter = POWER_PILL_TIME;
+var pillT; // --- AUDIO --- //
 
 function playAudio(audio) {
   var soundEffect = new Audio(audio);
@@ -722,9 +724,14 @@ function gameLoop(pacman, ghosts) {
     gameBoard.removeObject(pacman.pos, [_setup.OBJECT_TYPE.PILL]);
     pacman.powerPill = true;
     score += 50;
+    clearInterval(pillT);
+    pillT = setInterval(pillInterval, 1000); //Shows a countdown of a power pill
+
+    pillTime.innerHTML = POWER_PILL_TIME / 1000;
+    pillCounter = POWER_PILL_TIME;
     clearTimeout(powerPillTimer);
     powerPillTimer = setTimeout(function () {
-      return pacman.powerPill = false;
+      return pacman.powerPill = false, clearInterval(pillT);
     }, POWER_PILL_TIME);
   } // 7. Change ghost scare mode depending on powerpill
 
@@ -746,11 +753,17 @@ function gameLoop(pacman, ghosts) {
   scoreTable.innerHTML = score;
 }
 
+function pillInterval() {
+  pillCounter = pillCounter - 1000;
+  pillTime.innerHTML = pillCounter / 1000;
+}
+
 function startGame() {
   playAudio(_game_start.default);
   gameWin = false;
   powerPillActive = false;
   score = 0;
+  pillCounter = POWER_PILL_TIME;
   startButton.classList.add('hide');
   gameBoard.createGrid(_setup.LEVEL);
   var pacman = new _Pacman.default(2, 287);
@@ -795,7 +808,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53527" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55177" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

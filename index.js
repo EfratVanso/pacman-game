@@ -14,6 +14,7 @@ import soundGhost from './sounds/eat_ghost.wav';
 const gameGrid = document.querySelector('#game');
 const scoreTable = document.querySelector('#score');
 const startButton = document.querySelector('#start-button');
+const pillTime =document.querySelector('#pillTime');
 // Game constants
 const POWER_PILL_TIME = 10000; // ms
 const GLOBAL_SPEED = 80; // ms
@@ -25,6 +26,8 @@ let gameWin = false;
 let powerPillActive = false;
 let powerPillTimer = null;
 
+let pillCounter=POWER_PILL_TIME;
+let pillT;
 // --- AUDIO --- //
 function playAudio(audio) {
   const soundEffect = new Audio(audio);
@@ -95,9 +98,14 @@ function gameLoop(pacman, ghosts) {
     pacman.powerPill = true;
     score += 50;
 
+    clearInterval(pillT);
+    pillT = setInterval(pillInterval,1000);//Shows a countdown of a power pill
+    pillTime.innerHTML=POWER_PILL_TIME/1000;
+    pillCounter=POWER_PILL_TIME;
+
     clearTimeout(powerPillTimer);
     powerPillTimer = setTimeout(
-      () => (pacman.powerPill = false),
+      () => (pacman.powerPill = false, clearInterval(pillT)),
       POWER_PILL_TIME
     );
   }
@@ -114,13 +122,18 @@ function gameLoop(pacman, ghosts) {
   // 9. Show new score
   scoreTable.innerHTML = score;
 }
-
+function pillInterval(){
+    pillCounter=pillCounter-1000;
+    pillTime.innerHTML=pillCounter/1000;
+      
+}
 function startGame() {
   playAudio(soundGameStart);
 
   gameWin = false;
   powerPillActive = false;
   score = 0;
+  pillCounter=POWER_PILL_TIME;
 
   startButton.classList.add('hide');
 

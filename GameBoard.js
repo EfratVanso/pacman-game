@@ -78,4 +78,4 @@ class GameBoard {
   }
 }
 
-export default GameBoard;s
+export default GameBoard;
