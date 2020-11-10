@@ -104,6 +104,13 @@ body {
   padding: 9px 15px;
   border-radius: 10%;
   font-size: 1.5rem;
+  animation: blinking 0.3s   infinite;
+}
+@keyframes blinking {
+  50% {
+    color: red;
+    padding: 7px 13px;
+  }
 }
 
 .hide {
