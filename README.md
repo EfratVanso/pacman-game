@@ -1,7 +1,8 @@
 # pacman-game
 
 
-The classic game of pacman
+The classic game of pacman.
+
 You can run it directly here: 
 **https://efratvanso.github.io/pacman-game/**
 
