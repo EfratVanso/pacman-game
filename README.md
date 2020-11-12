@@ -45,9 +45,9 @@ My Site: https://efratvanso.github.io/
 
 ## Screenshots
 
-<img style="-webkit-user-select: none;margin: auto;width: 700px;" src="https://raw.githubusercontent.com/EfratVanso/pacman-game/master/pacmanGame.png" width="600">
+<img style="-webkit-user-select: none;margin: auto;width: 700px;" src="https://raw.githubusercontent.com/EfratVanso/pacman-game/master/pacmanGame.png" width="700">
 
-<br/><br/>
+<br/>
 Game win is after pacman ate all the dots:
 
-<img style="-webkit-user-select: none;margin: auto;width: 700px;" src="https://raw.githubusercontent.com/EfratVanso/pacman-game/master/pacmanWin.png" width="600">
+<img style="-webkit-user-select: none;margin: auto;width: 700px;" src="https://raw.githubusercontent.com/EfratVanso/pacman-game/master/pacmanWin.png" width="700">
